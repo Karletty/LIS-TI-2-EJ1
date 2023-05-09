@@ -48,12 +48,14 @@ class AuthController extends Controller
             }
 
             $user = User::where('email', $request['email'])->firstOrFail();
+            $employee = Employee::where('user_id', $user->id)->firstOrFail();
             $token = $user->createToken('auth_token')->plainTextToken;
 
             return response()->json([
                   'message' => 'Hi ' . $user->name,
                   'accessToken' => $token,
                   'token_type' => 'Bearer',
+                  'employee'=> $employee,
                   'user' => $user
             ]);
       }
