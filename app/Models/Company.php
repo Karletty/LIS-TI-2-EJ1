@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $category_id
  * 
  * @property Category $category
+ * @property Collection|AdminCompany[] $admin_companies
  * @property Collection|Employee[] $employees
  * @property Collection|Offer[] $offers
  *
@@ -54,13 +55,18 @@ class Company extends Model
 		return $this->belongsTo(Category::class);
 	}
 
+	public function admin_companies()
+	{
+		return $this->hasMany(AdminCompany::class)->onDelete('cascade');
+	}
+
 	public function employees()
 	{
-		return $this->hasMany(Employee::class);
+		return $this->hasMany(Employee::class)->onDelete('cascade');
 	}
 
 	public function offers()
 	{
-		return $this->hasMany(Offer::class);
+		return $this->hasMany(Offer::class)->onDelete('cascade');
 	}
 }

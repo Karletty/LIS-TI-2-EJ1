@@ -31,6 +31,6 @@ class CouponState extends Model
 
 	public function coupons()
 	{
-		return $this->hasMany(Coupon::class);
+		return $this->hasMany(Coupon::class)->onDelete('cascade');
 	}
 }

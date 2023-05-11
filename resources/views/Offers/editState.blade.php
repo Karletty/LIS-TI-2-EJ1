@@ -2,10 +2,9 @@
 @section('title', 'Editar')
 @section('content')
     <h1 class="mb-4">Editar oferta {{ $offer['offer_id'] }}</h1>
-    
-    <form action="{{ route('Offers.update', $offer->offer_id) }}" method="POST">
-        {{ method_field('PUT') }}
-        {{ csrf_field() }}
+    <form action="{{ route('Offers.update', ['Offer' => $offer['offer_id']]) }}" method="POST">
+        @csrf
+        @method('PUT')
 
         <div class="mb-3">
             <label for="offer_state">Estado de la oferta</label>

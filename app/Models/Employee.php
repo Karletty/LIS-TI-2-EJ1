@@ -11,19 +11,18 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class Employee
  * 
- * @property int $employee_id
- * @property string $company_id
+ * @property int $id
  * @property int $user_id
+ * @property string|null $company_id
  * 
- * @property UsersDatum $users_datum
- * @property Company $company
+ * @property Company|null $company
+ * @property User $user
  *
  * @package App\Models
  */
 class Employee extends Model
 {
 	protected $table = 'employees';
-	protected $primaryKey = 'employee_id';
 	public $timestamps = false;
 
 	protected $casts = [
@@ -31,17 +30,17 @@ class Employee extends Model
 	];
 
 	protected $fillable = [
-		'company_id',
-		'user_id'
+		'user_id',
+		'company_id'
 	];
-
-	public function users_datum()
-	{
-		return $this->belongsTo(UsersDatum::class, 'user_id');
-	}
 
 	public function company()
 	{
 		return $this->belongsTo(Company::class);
+	}
+
+	public function user()
+	{
+		return $this->belongsTo(User::class);
 	}
 }

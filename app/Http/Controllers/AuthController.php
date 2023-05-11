@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Employee;
+use Laravel\Sanctum\HasApiTokens;
 use \stdClass;
 
 class AuthController extends Controller
@@ -55,7 +56,7 @@ class AuthController extends Controller
                   'message' => 'Hi ' . $user->name,
                   'accessToken' => $token,
                   'token_type' => 'Bearer',
-                  'employee'=> $employee,
+                  'employee' => $employee,
                   'user' => $user
             ]);
       }

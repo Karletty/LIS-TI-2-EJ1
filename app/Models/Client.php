@@ -55,6 +55,6 @@ class Client extends Model
 
 	public function coupons()
 	{
-		return $this->hasMany(Coupon::class, 'client_dui');
+		return $this->hasMany(Coupon::class, 'client_dui')->onDelete('cascade');
 	}
 }

@@ -48,6 +48,9 @@
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="{{ route('Clients.index') }}">Clientes</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{{ route('logout') }}">Cerrar sesión</a>
+                </li>
             </ul>
         </nav>
     </header>

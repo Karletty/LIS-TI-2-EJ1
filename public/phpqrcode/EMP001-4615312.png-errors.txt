@@ -1,0 +1,1 @@
+2023-05-11 18:03:36: imagepng(Views/assets/img/qrs/EMP001-4615312.png): Failed to open stream: No such file or directory

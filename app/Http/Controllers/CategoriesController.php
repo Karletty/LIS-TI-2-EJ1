@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdminCompany;
 use App\Models\Category;
+use App\Models\Company;
+use App\Models\Coupon;
+use App\Models\Employee;
+use App\Models\Offer;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class CategoriesController extends Controller
@@ -23,6 +29,9 @@ class CategoriesController extends Controller
        */
       public function create()
       {
+            if ($_SESSION['user']['type_id'] == '4') {
+                  return view('Categories.create', ['user' => $_SESSION['user']]);
+            }
             //
       }
 
@@ -31,7 +40,13 @@ class CategoriesController extends Controller
        */
       public function store(Request $request)
       {
-            //
+            $request->validate([
+                  'category_name' => 'required'
+            ]);
+            $c = new Category();
+            $c['category_name'] = $request['category_name'];
+            $c->save();
+            return to_route('Categories.index');
       }
 
       /**
@@ -39,32 +54,39 @@ class CategoriesController extends Controller
        */
       public function show(Category $category)
       {
-            //
       }
 
       /**
        * Show the form for editing the specified resource.
        */
-      public function edit(Category $category)
+      public function edit($category)
       {
             if ($_SESSION['user']['type_id'] == '4') {
-                  return view('Categories.edit', ['user' => $_SESSION['user'], 'category' => $category]);
+                  $c = Category::where('category_id', $category)->get()->first();
+                  return view('Categories.edit', ['user' => $_SESSION['user'], 'category' => $c]);
             }
       }
 
       /**
        * Update the specified resource in storage.
        */
-      public function update(Request $request, Category $category)
+      public function update(Request $request, $category)
       {
-            //
+            $request->validate([
+                  'category_name' => 'required'
+            ]);
+            $c = Category::where('category_id', $category)->get()->first();
+            $c['category_name'] = $request['category_name'];
+            $c->save();
+            return to_route('Categories.index');
       }
 
       /**
        * Remove the specified resource from storage.
        */
-      public function destroy(Category $category)
+      public function destroy($category)
       {
-            //
+            Category::where('category_id', $category)->delete();
+            // return to_route('Categories.index');
       }
 }

@@ -20,8 +20,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $type_id
  * 
  * @property UserType $user_type
+ * @property Collection|AdminCompany[] $admin_companies
  * @property Collection|Client[] $clients
- * @property Collection|Employee[] $employees
  *
  * @package App\Models
  */
@@ -48,13 +48,13 @@ class UsersDatum extends Model
 		return $this->belongsTo(UserType::class, 'type_id');
 	}
 
-	public function clients()
+	public function admin_companies()
 	{
-		return $this->hasMany(Client::class, 'user_id');
+		return $this->hasMany(AdminCompany::class, 'user_id')->onDelete('cascade');
 	}
 
-	public function employees()
+	public function clients()
 	{
-		return $this->hasMany(Employee::class, 'user_id');
+		return $this->hasMany(Client::class, 'user_id')->onDelete('cascade');
 	}
 }
