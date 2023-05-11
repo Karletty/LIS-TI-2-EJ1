@@ -42,7 +42,7 @@
                         </td>
                         <td>
                             @if ($offer['offer_state']['offer_state_id'] == 1)
-                                <a class="btn" href="{{ route('Offers.edit', ['Offer' => $offer['offer_id']]) }}"><i
+                                <a class="btn btn-primary" href="{{ route('Offers.edit', $offer->offer_id) }}"><i
                                         class="bi bi-pencil-square"></i>
                                 </a>
                             @endif

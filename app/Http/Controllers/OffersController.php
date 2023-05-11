@@ -50,12 +50,11 @@ class OffersController extends Controller
       /**
        * Show the form for editing the specified resource.
        */
-      public function edit($offer)
+      public function edit(Offer $offer)
       {
             if ($_SESSION['user']['type_id'] == '4') {
                   $offerStates = OfferState::get();
-                  $o = Offer::with('Company', 'offer_state')->where('offer_id', $offer)->first();
-                  return view('Offers.editState', ['user' => $_SESSION['user'], 'offer' => $o, 'offerStates' => $offerStates]);
+                  return view('Offers.editState', ['user' => $_SESSION['user'], 'offer' => $offer, 'offerStates' => $offerStates]);
             }
       }
 
@@ -67,16 +66,12 @@ class OffersController extends Controller
             $request->validate([
                   'offer_state_id' => ['required']
             ]);
-            if ($request['offer_state_id']) {
-                  return to_route('Offers.justificate');
-            }
 
+            $offer->justification = $request['justification'];
             $offer->offer_state_id = $request['offer_state_id'];
-            $resp = $offer->save();
+            $offer->save();
 
-            if ($resp) {
-                  return to_route('Offers.index');
-            }
+            return to_route('Offers.index');
       }
 
       /**

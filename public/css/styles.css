@@ -169,21 +169,21 @@ a.no-link:hover {
       color: #000;
 }
 
-a.btn,
-button.btn {
+a.btn-principal,
+button.btn-principal {
       background-color: #FD8910C8;
       color: #FFFFFF;
       font-weight: bold;
 }
 
-a.btn:hover,
-button.btn:hover {
+a.btn-principal:hover,
+button.btn-principal:hover {
       background-color: #FD8910;
       color: #FFFFFF;
       transform: scale(1.05);
 }
 
-.btn.btn-circle {
+.btn-principal.btn-circle {
       border-radius: 50%;
       border: 1px solid #FD8910C8;
       color: #FD8910C8;

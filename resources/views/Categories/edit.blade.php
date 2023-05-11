@@ -1,9 +1,8 @@
 @extends('layout.templateAdmin')
 @section('title', 'Editar')
 @section('content')
-    <h1 class="mb-4">Editar oferta {{ $offer['offer_id'] }}</h1>
-    
-    <form action="{{ route('Offers.update', $offer->offer_id) }}" method="POST">
+    <h1 class="mb-4">Editar oferta {{ $category['category_id'] }}</h1>
+    <form action="{{ route('Categories.update', $category['category_id']) }}" method="POST">
         {{ method_field('PUT') }}
         {{ csrf_field() }}
 
