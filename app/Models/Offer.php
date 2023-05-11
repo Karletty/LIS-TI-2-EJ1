@@ -36,49 +36,49 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Offer extends Model
 {
-	protected $table = 'offers';
-	protected $primaryKey = 'offer_id';
-	public $timestamps = false;
+      protected $table = 'offers';
+      protected $primaryKey = 'offer_id';
+      public $timestamps = false;
 
-	protected $casts = [
-		'limit_qty' => 'int',
-		'start_date' => 'datetime',
-		'end_date' => 'datetime',
-		'original_price' => 'float',
-		'offer_price' => 'float',
-		'offer_state_id' => 'int',
-		'deadline_date' => 'datetime',
-		'available_qty' => 'int'
-	];
+      protected $casts = [
+            'limit_qty' => 'int',
+            'start_date' => 'datetime',
+            'end_date' => 'datetime',
+            'original_price' => 'float',
+            'offer_price' => 'float',
+            'offer_state_id' => 'int',
+            'deadline_date' => 'datetime',
+            'available_qty' => 'int'
+      ];
 
-	protected $fillable = [
-		'title',
-		'limit_qty',
-		'offer_description',
-		'details',
-		'start_date',
-		'end_date',
-		'original_price',
-		'offer_price',
-		'company_id',
-		'offer_state_id',
-		'justification',
-		'deadline_date',
-		'available_qty'
-	];
+      protected $fillable = [
+            'title',
+            'limit_qty',
+            'offer_description',
+            'details',
+            'start_date',
+            'end_date',
+            'original_price',
+            'offer_price',
+            'company_id',
+            'offer_state_id',
+            'justification',
+            'deadline_date',
+            'available_qty'
+      ];
 
-	public function company()
-	{
-		return $this->belongsTo(Company::class);
-	}
+      public function company()
+      {
+            return $this->belongsTo(Company::class, 'company_id');
+      }
 
-	public function offer_state()
-	{
-		return $this->belongsTo(OfferState::class);
-	}
+      public function offer_state()
+      {
+            return $this->belongsTo(OfferState::class, 'offer_state_id');
+      }
 
-	public function coupons()
-	{
-		return $this->hasMany(Coupon::class);
-	}
+      public function coupons()
+      {
+            return $this->hasMany(Coupon::class, 'coupon_id');
+      }
 }

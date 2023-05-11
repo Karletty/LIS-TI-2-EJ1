@@ -14,7 +14,9 @@ return new class extends Migration
             Schema::create('employees', function (Blueprint $table) {
                   $table->id();
                   $table->unsignedBigInteger('user_id')->unique();
+                  $table->string('company_id',6)->charset('utf8mb4')->nullable();
                   $table->foreign('user_id')->references('id')->on('users');
+                  $table->foreign('company_id')->references('company_id')->on('companies');
             });
       }
 
