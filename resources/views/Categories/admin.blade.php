@@ -2,6 +2,7 @@
 @section('title', 'Categorías')
 @section('content')
     <h1>Categorías</h1>
+    <a href="{{ route('Categories.create') }}" class="btn btn-principal">Crear categoría</a>
     <div class="overflow-x-scroll">
         <table class="table">
             <thead>
@@ -19,13 +20,6 @@
                         <td>
                             <a href="{{ route('Categories.edit', $category['category_id']) }}" class="btn btn-primary"><i
                                     class="bi bi-pencil-square"></i></a>
-                            <a href="{{ route('Categories.destroy', $category['category_id']) }}" class="btn btn-danger"
-                                onclick="event.preventDefault(); document.getElementById('delete-form').submit();"><i
-                                    class="bi bi-trash3"></i></a>
-                            <form id="delete-form" action="{{ route('Categories.destroy', ['Category' => $category['category_id']]) }}"
-                                method="POST" style="display: none;">
-                                {{ csrf_field() }}
-                                {{ method_field('DELETE') }}
                             </form>
                         </td>
                     </tr>

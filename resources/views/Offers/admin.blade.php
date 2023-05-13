@@ -1,7 +1,6 @@
 @extends('layout.templateAdmin')
 @section('title', 'Ofertas')
 @section('content')
-    {{-- {{ dd($offers) }} --}}
     <h1>Ofertas</h1>
     <div class="overflow-x-scroll">
         <table class="table">

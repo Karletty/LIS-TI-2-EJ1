@@ -8,6 +8,7 @@ use App\Models\OfferState;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class OffersController extends Controller
 {
@@ -25,7 +26,7 @@ class OffersController extends Controller
             $categories = Category::get();
 
             if (isset($_SESSION) && isset($_SESSION['user']) && $_SESSION['user']['type_id'] == 2) {
-                  DB::table('offers as o')
+                  $offers = DB::table('offers as o')
                         ->join('offer_states as s', 'o.offer_state_id', '=', 's.offer_state_id')
                         ->join('companies as c', 'o.company_id', '=', 'c.company_id')
                         ->select(
@@ -40,6 +41,7 @@ class OffersController extends Controller
                               'o.offer_price',
                               'c.company_name',
                               's.offer_state_description',
+                              's.offer_state_id',
                               'o.justification',
                               'o.deadline_date',
                               'o.available_qty',
@@ -48,12 +50,7 @@ class OffersController extends Controller
                         ->where('o.company_id', '=', $_SESSION['user']['company_id'])
                         ->orderBy('o.offer_id')
                         ->get();
-                  $view = 'companyAdmin';
-            }
-            if (!isset($_SESSION['user'])) {
-                  $view = 'public';
-            }
-            if (!isset($_SESSION['user']) || $_SESSION['user']['type_id'] != 1) {
+            } else if (!isset($_SESSION['user']) || $_SESSION['user']['type_id'] != 1) {
                   $offers = DB::table('offers as o')
                         ->select(
                               'o.offer_id',
@@ -66,6 +63,7 @@ class OffersController extends Controller
                               'o.original_price',
                               'o.offer_price',
                               'co.company_name',
+                              's.offer_state_id',
                               's.offer_state_description',
                               'o.justification',
                               'o.deadline_date',
@@ -79,12 +77,16 @@ class OffersController extends Controller
                         ->join('categories as ca', 'co.category_id', '=', 'ca.category_id')
                         ->orderBy('o.offer_id')
                         ->get();
-                  $view = 'admin';
+            }
+            if (!isset($_SESSION['user'])) {
+                  $view = 'public';
             }
             if ($_SESSION['user']['type_id'] == 4) {
                   $view = 'admin';
             } else if ($_SESSION['user']['type_id'] == 3) {
                   $view = 'client';
+            } else if ($_SESSION['user']['type_id'] == 2) {
+                  $view = 'companyAdmin';
             }
 
             $offers = json_decode(json_encode($offers), true);
@@ -143,7 +145,10 @@ class OffersController extends Controller
        */
       public function create()
       {
-            //
+            if (isset($_SESSION['user']['type_id']) && $_SESSION['user']['type_id'] == 2) {
+                  return view('Offers.create');
+            }
+            return view('Offers.index');
       }
 
       /**
@@ -151,7 +156,34 @@ class OffersController extends Controller
        */
       public function store(Request $request)
       {
-            //
+            if (isset($_SESSION['user']['type_id']) && $_SESSION['user']['type_id'] == 2) {
+                  $validator = Validator::make($request->all(), [
+                        'title' => 'required|max:100',
+                        'limit_qty' => 'required|integer',
+                        'offer_description' => 'required',
+                        'start_date' => 'required|date',
+                        'end_date' => 'required|date|after:start_date',
+                        'original_price' => 'required|numeric',
+                        'offer_price' => 'required|numeric',
+                        'deadline_date' => 'required|date|before:end_date',
+                        'available_qty' => 'required|integer',
+                  ]);
+                  $offer = Offer::create([
+                        'title' => $request->input('title'),
+                        'limit_qty' => $request->input('limit_qty'),
+                        'offer_description' => $request->input('offer_description'),
+                        'details' => $request->input('details'),
+                        'start_date' => $request->input('start_date'),
+                        'end_date' => $request->input('end_date'),
+                        'original_price' => $request->input('original_price'),
+                        'offer_state_id' => 1,
+                        'offer_price' => $request->input('offer_price'),
+                        'deadline_date' => $request->input('deadline_date'),
+                        'available_qty' => $request->input('limit_qty'),
+                        'company_id' => $_SESSION['user']['company_id']
+                  ]);
+            }
+            return to_route('Offers.index');
       }
 
       /**
@@ -181,6 +213,7 @@ class OffersController extends Controller
 
                   return view('Offers.details', $viewbag);
             }
+            return to_route('Offers.index');
       }
 
       /**
@@ -188,11 +221,20 @@ class OffersController extends Controller
        */
       public function edit($offer)
       {
-            if ($_SESSION['user']['type_id'] == 4) {
+            if (isset($_SESSION['user']['type_id']) && $_SESSION['user']['type_id'] == 4) {
                   $offerStates = OfferState::get();
                   $o = Offer::get()->where('offer_id', $offer)->first();
-                  return view('Offers.editState', ['user' => $_SESSION['user'], 'offer' => $o, 'offerStates' => $offerStates]);
+                  if ($o->offer_state_id == 1) {
+                        return view('Offers.editState', ['user' => $_SESSION['user'], 'offer' => $o, 'offerStates' => $offerStates]);
+                  }
             }
+            if (isset($_SESSION['user']['type_id']) && $_SESSION['user']['type_id'] == 2) {
+                  $o = Offer::get()->where('offer_id', $offer)->first();
+                  if ($o->offer_state_id == 3) {
+                        return view('Offers.edit', ['user' => $_SESSION['user'], 'offer' => $o]);
+                  }
+            }
+            return to_route('Offers.index');
       }
 
       /**
@@ -200,18 +242,46 @@ class OffersController extends Controller
        */
       public function update(Request $request, $offer)
       {
-            if ($_SESSION['user']['type_id'] == 4) {
+            if (isset($_SESSION['user']['type_id']) && $_SESSION['user']['type_id'] == 4) {
                   $request->validate([
-                        'offer_state_id' => ['required']
+                        'offer_state' => ['required '],
+                        'justification' => 'required_if:offer_state,3'
                   ]);
+
                   $o = Offer::get()->where('offer_id', $offer)->first();
-
-                  $o->justification = $request['justification'];
-                  $o->offer_state_id = $request['offer_state_id'];
-                  $o->save();
-
-                  return to_route('Offers.index');
+                  if ($o->offer_state_id == 1) {
+                        $o->justification = $request['justification'];
+                        $o->offer_state_id = $request['offer_state'];
+                        $o->save();
+                  }
             }
+            if (isset($_SESSION['user']['type_id']) && $_SESSION['user']['type_id'] == 2) {
+                  $validator = Validator::make($request->all(), [
+                        'title' => 'required|max:100',
+                        'limit_qty' => 'required|integer',
+                        'offer_description' => 'required',
+                        'start_date' => 'required|date',
+                        'end_date' => 'required|date|after:start_date',
+                        'original_price' => 'required|numeric',
+                        'offer_price' => 'required|numeric',
+                        'deadline_date' => 'required|date|before:end_date',
+                        'available_qty' => 'required|integer',
+                  ]);
+                  $offer = Offer::where('offer_id', $offer)->first();
+                  $offer->title = $request->input('title');
+                  $offer->offer_state_id = 1;
+                  $offer->limit_qty = $request->input('limit_qty');
+                  $offer->offer_description = $request->input('offer_description');
+                  $offer->details = $request->input('details');
+                  $offer->start_date = $request->input('start_date');
+                  $offer->end_date = $request->input('end_date');
+                  $offer->original_price = $request->input('original_price');
+                  $offer->offer_price = $request->input('offer_price');
+                  $offer->deadline_date = $request->input('deadline_date');
+                  $offer->available_qty = $request->input('limit_qty');
+                  $offer->save();
+            }
+            return to_route('Offers.index');
       }
 
       /**

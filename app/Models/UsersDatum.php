@@ -50,11 +50,11 @@ class UsersDatum extends Model
 
 	public function admin_companies()
 	{
-		return $this->hasMany(AdminCompany::class, 'user_id')->onDelete('cascade');
+		return $this->hasMany(AdminCompany::class, 'user_id');
 	}
 
 	public function clients()
 	{
-		return $this->hasMany(Client::class, 'user_id')->onDelete('cascade');
+		return $this->hasMany(Client::class, 'user_id');
 	}
 }

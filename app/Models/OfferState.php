@@ -31,6 +31,6 @@ class OfferState extends Model
 
 	public function offers()
 	{
-		return $this->hasMany(Offer::class)->onDelete('cascade');
+		return $this->hasMany(Offer::class);
 	}
 }

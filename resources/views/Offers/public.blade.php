@@ -18,10 +18,12 @@
                 <label>Precio</label>
                 <div class="d-flex">
                     <div class="min">
-                        <input type="text" class="form-control" name="min-price" placeholder="Mín" {{ old('min-price') }}>
+                        <input type="text" class="form-control" name="min-price" placeholder="Mín"
+                            {{ old('min-price') }}>
                     </div>
                     <div class="max">
-                        <input type="text" class="form-control" name="max-price" placeholder="Max" {{ old('max-price') }}>
+                        <input type="text" class="form-control" name="max-price" placeholder="Max"
+                            {{ old('max-price') }}>
                     </div>
                 </div>
             </div>
@@ -33,7 +35,7 @@
         @foreach ($offers as $offer)
             <div class="card col p-4">
                 <h5 class="card-title">
-                    <a href="{{route('Offers.show', $offer->offer_id )}}" class="btn btn-circle"
+                    <a href="{{ route('Offers.show', $offer->offer_id) }}" class="btn btn-circle"
                         title="Detalles de la oferta">
                         <i class="bi bi-list-ul"></i>
                     </a>{{ $offer->title }}

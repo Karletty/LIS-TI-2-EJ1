@@ -22,25 +22,27 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Employee extends Model
 {
-	protected $table = 'employees';
-	public $timestamps = false;
+      protected $table = 'employees';
+      public $timestamps = false;
 
-	protected $casts = [
-		'user_id' => 'int'
-	];
+      protected $casts = [
+            'user_id' => 'int'
+      ];
 
-	protected $fillable = [
-		'user_id',
-		'company_id'
-	];
+      protected $fillable = [
+            'user_id',
+            'company_id',
+            'first_name',
+            'last_name'
+      ];
 
-	public function company()
-	{
-		return $this->belongsTo(Company::class);
-	}
+      public function company()
+      {
+            return $this->belongsTo(Company::class);
+      }
 
-	public function user()
-	{
-		return $this->belongsTo(User::class);
-	}
+      public function user()
+      {
+            return $this->belongsTo(User::class);
+      }
 }

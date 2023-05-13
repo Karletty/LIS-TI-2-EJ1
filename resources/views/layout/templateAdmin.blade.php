@@ -10,6 +10,12 @@
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css" />
+
+
     <link rel="icon" type="image/png" href="{{ asset('img/favicon.png') }}" />
 </head>
 
@@ -42,19 +48,43 @@
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="Companies.create">Crear</a></li>
+                        <li><a class="dropdown-item" href="{{ route('Companies.create') }}">Crear</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="{{ route('Clients.index') }}">Clientes</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="{{ route('logout') }}">Cerrar sesión</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button"
+                        aria-expanded="false">{{ $_SESSION['user']['user_names'] }}</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{{ route('logout') }}">Cerrar sesión</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="{{ route('changePassword') }}">Cambiar contraseña</a></li>
+                    </ul>
                 </li>
             </ul>
         </nav>
     </header>
     <main class="">
+        @if (isset($_SESSION['success_message']))
+            <script>
+                alertify.success('<?= $_SESSION['success_message'] ?>')
+            </script>
+            <?php
+            unset($_SESSION['success_message']);
+            ?>
+        @endif
+        @if (isset($_SESSION['error_message']))
+            <script>
+                alertify.error('<?= $_SESSION['error_message'] ?>')
+            </script>
+            <?php
+            unset($_SESSION['error_message']);
+            ?>
+        @endif
         @yield('content')
     </main>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"

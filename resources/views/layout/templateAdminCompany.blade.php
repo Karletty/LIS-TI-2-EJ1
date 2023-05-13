@@ -20,19 +20,43 @@
                 <img class="logo" src="{{ asset('img/logo.png') }}" alt="La cuponera">
             </div>
             <ul class="nav nav-pills justify-content-end">
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="{{ route('Offers.index') }}">Ofertas de hoy</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button"
+                        aria-expanded="false">Ofertas</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{{ route('Offers.index') }}">Lista</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="{{ route('Offers.create') }}">Crear</a></li>
+                    </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="{{ route('login') }}">Login</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button"
+                        aria-expanded="false">Empleados</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{{ route('Employees.index') }}">Lista</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="{{ route('Employees.create') }}">Crear</a></li>
+                    </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="{{ route('Client.signup') }}">Signup</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button"
+                        aria-expanded="false">{{$_SESSION['user']['user_names']}}</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{{ route('logout') }}">Cerrar sesión</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="{{ route('changePassword') }}">Cambiar contraseña</a></li>
+                    </ul>
                 </li>
             </ul>
         </nav>
     </header>
-    <main>
+    <main class="">
       @if (isset($_SESSION['success_message']))
           <script>
               alertify.success('<?= $_SESSION['success_message'] ?>')

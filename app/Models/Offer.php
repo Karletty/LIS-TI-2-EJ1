@@ -79,6 +79,6 @@ class Offer extends Model
 
 	public function coupons()
 	{
-		return $this->hasMany(Coupon::class)->onDelete('cascade');
+		return $this->hasMany(Coupon::class);
 	}
 }

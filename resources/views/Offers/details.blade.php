@@ -1,5 +1,5 @@
     @extends($template)
-    @section('title', 'Ofertas')
+    @section('title', 'Detalle oferta')
     @section('content')
         <div class="offer-container">
             <div class="card p-4">

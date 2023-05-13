@@ -41,8 +41,8 @@
                                         onclick="add(<?= $count ?>, <?= $offer['available_qty'] ?>)"></i>
                                 </div>
                                 <div class="d-flex justify-content-betwen">
-                                    <button name="add" type="submit" class="btn btn-principal m-3" title="Añadir al carrito"><i
-                                            class="bi bi-cart-plus"></i></button>
+                                    <button name="add" type="submit" class="btn btn-principal m-3"
+                                        title="Añadir al carrito"><i class="bi bi-cart-plus"></i></button>
                                 </div>
                             </form>
                         </td>

@@ -19,7 +19,9 @@ class AuthController extends Controller
                   'name' => 'required|string|max:255',
                   'email' => 'required|string|email|max:255|unique:users',
                   'password' => 'required|string|min:8',
-                  'company_id' => 'required|string|min:6|max:6'
+                  'company_id' => 'required|string|min:6|max:6',
+                  'first_name' => 'required|string|max:255',
+                  'last_name' => 'required|string|max:255',
             ]);
 
             if ($validator->fails()) {
@@ -35,6 +37,8 @@ class AuthController extends Controller
             $employee = Employee::create([
                   'user_id' => $user->id,
                   'company_id' => $request->company_id,
+                  'first_name' => $request->first_name,
+                  'last_name' => $request->last_name
             ]);
 
             $token = $user->createToken('auth_token')->plainTextToken;

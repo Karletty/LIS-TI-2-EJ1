@@ -41,6 +41,7 @@ class Company extends Model
 	];
 
 	protected $fillable = [
+            'company_id',
 		'company_name',
 		'address',
 		'contact_name',
@@ -57,16 +58,16 @@ class Company extends Model
 
 	public function admin_companies()
 	{
-		return $this->hasMany(AdminCompany::class)->onDelete('cascade');
+		return $this->hasMany(AdminCompany::class);
 	}
 
 	public function employees()
 	{
-		return $this->hasMany(Employee::class)->onDelete('cascade');
+		return $this->hasMany(Employee::class);
 	}
 
 	public function offers()
 	{
-		return $this->hasMany(Offer::class)->onDelete('cascade');
+		return $this->hasMany(Offer::class);
 	}
 }

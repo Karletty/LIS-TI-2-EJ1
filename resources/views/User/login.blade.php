@@ -7,9 +7,9 @@
                 @csrf
                 <div class="card-body">
                     <h2>LOGIN</h2>
-                    @if ($errors->all())
+                    @if (isset($e) && count($e))
                         <div class="alert alert-danger w-100" role="alert">
-                            @foreach ($errors->all() as $error)
+                            @foreach ($e as $error)
                                 <p class="m-0"><?= $error ?></p>
                             @endforeach
                         </div>
@@ -17,11 +17,11 @@
                     <div class="w-100">
                         <div class="mb-3">
                             <input type="email" name="user-email" class="form-control" placeholder="Correo"
-                                {{ old('user-email') }}>
+                                value="{{ old('user-email') }}">
                         </div>
                         <div class="mb-3">
                             <input type="password" name="user-pass" class="form-control" placeholder="Contraseña"
-                                {{ old('user-pass') }}>
+                                value="{{ old('user-pass') }}">
                         </div>
                         <a href="{{ url('forgotPassword') }}">Olvidé mi contraseña</a>
                     </div>

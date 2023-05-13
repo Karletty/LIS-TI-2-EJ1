@@ -41,20 +41,35 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button"
-                        aria-expanded="false"><?= $user_name ?></a>
+                        aria-expanded="false">{{ $_SESSION['user']['user_names'] }}</a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{{ route('logout') }}">Cerrar sesión</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="{{ route('changePassword') }}">Cambiar contraseña</a>
-                        </li>
+                        <li><a class="dropdown-item" href="{{ route('changePassword') }}">Cambiar contraseña</a></li>
                     </ul>
                 </li>
             </ul>
         </nav>
     </header>
     <main>
+      @if (isset($_SESSION['success_message']))
+          <script>
+              alertify.success('<?= $_SESSION['success_message'] ?>')
+          </script>
+          <?php
+          unset($_SESSION['success_message']);
+          ?>
+      @endif
+      @if (isset($_SESSION['error_message']))
+          <script>
+              alertify.error('<?= $_SESSION['error_message'] ?>')
+          </script>
+          <?php
+          unset($_SESSION['error_message']);
+          ?>
+      @endif
         @yield('content')
     </main>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"
